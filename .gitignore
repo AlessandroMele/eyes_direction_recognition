@@ -2,7 +2,6 @@
 dataset
 
 #javascript node modules and linter
-javascript/.jshintrc
 javascript/node_modules
 
 #json containing bounding boxes and eyes tracking coords
@@ -17,4 +16,3 @@ readme_materials/files
 
 #don't understand what is it :')
 .DS_Store
-

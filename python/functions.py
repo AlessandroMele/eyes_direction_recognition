@@ -51,7 +51,7 @@ def recognize_landmark(values):
     return "other"
 
 #path dirs
-json_path = os.getcwd() + "/json/"
+json_path = os.getcwd() + "/dataset/json_annotation/"
 annotated_images_path = os.getcwd() + "/dataset/annotated_images/"
 cropped_images_path = os.getcwd() + "/dataset/cropped_images/"
 original_images_path = os.getcwd() + "/dataset/original_images/"
