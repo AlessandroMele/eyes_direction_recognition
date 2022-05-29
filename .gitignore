@@ -1,0 +1,20 @@
+#dataset images
+dataset
+
+#javascript node modules and linter
+javascript/.jshintrc
+javascript/node_modules
+
+#json containing bounding boxes and eyes tracking coords
+json
+
+#python 
+python/__pycache__
+python/utils.py
+
+#modifiable files
+readme_materials/files
+
+#don't understand what is it :')
+.DS_Store
+
