@@ -11,7 +11,7 @@ mp_face_mesh = mp.solutions.face_mesh
 
 #getting images
 #files = ft.get_images()
-files = ['/Users/alessandro/Desktop/vscode/deep_eyes_recognition/dataset/images_js/(0.00, 50).png']
+files = ['/Users/alessandro/Desktop/vscode/eyes_direction_recognition/dataset/original_images/alto_centro/0.38_0.07.png']
 
 with mp_face_mesh.FaceMesh(static_image_mode = True, max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5) as face_mesh:
   for idx, file in enumerate(files):
@@ -35,32 +35,19 @@ with mp_face_mesh.FaceMesh(static_image_mode = True, max_num_faces = 1, refine_l
           mp_drawing.draw_landmarks(image = annotated_image, landmark_list = landmark_pb2.NormalizedLandmarkList(landmark = eyes_face_landmarks[1]), landmark_drawing_spec = mp_drawing.DrawingSpec(color=ft.red, thickness=4, circle_radius=1))
     
       #calculating bounding boxes
-      bounding_boxes = ft.bounding_boxes(eyes_coords, image)
-      
-      """
-      #drawing bounding boxes
-      cv2.rectangle(annotated_image, (bounding_boxes["start_left_eye"]["x"], bounding_boxes["start_left_eye"]["y"]), (bounding_boxes["stop_left_eye"]["x"], bounding_boxes["stop_left_eye"]["y"]), ft.green, 4)
-      cv2.rectangle(annotated_image, (bounding_boxes["start_right_eye"]["x"], bounding_boxes["start_right_eye"]["y"]), (bounding_boxes["stop_right_eye"]["x"], bounding_boxes["stop_right_eye"]["y"]), ft.red, 4)
-      """
+      left_eye_image, right_eye_image = ft.cropped_images(image,eyes_coords,idx)
 
-      #creating new images with left and right eyes only
-      left_eye_image = image[bounding_boxes["start_left_eye"]["y"]:bounding_boxes["stop_left_eye"]["y"], bounding_boxes["start_left_eye"]["x"]:bounding_boxes["stop_left_eye"]["x"], :]
-      right_eye_image = image[bounding_boxes["start_right_eye"]["y"]:bounding_boxes["stop_right_eye"]["y"], bounding_boxes["start_right_eye"]["x"]:bounding_boxes["stop_right_eye"]["x"], :]
-      
-      cv2.imshow("annotated_image",annotated_image)
-      cv2.waitKey()
-      #saving cropped images
-      cv2.imwrite(ft.cropped_images_path + "cropped_right_" + str(idx) + ".png", right_eye_image)
-      cv2.imwrite(ft.cropped_images_path + "cropped_left_" + str(idx) + ".png", left_eye_image)
       
       #change_perspective of eyes
+      """
       ft.change_perspective(right_eye_image, "perspective_right_eye_", idx)
       ft.change_perspective(left_eye_image, "perspective_left_eye_", idx)
+      """
 
       #change_rotation of eyes
       ft.change_rotation(right_eye_image, "rotated_right_eye_", idx)
       ft.change_rotation(left_eye_image, "rotated_left_eye_", idx)
-        
+      
     except:
       print(f"Ops! Something went wrong with id: {str(idx)} ..., skipping item!")
       idx += 1

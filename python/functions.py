@@ -113,16 +113,36 @@ def bounding_boxes(eyes_coords, image):
     "y": int(max(y_list)*image.shape[0])} })
     return bounding_boxes
 
+def cropped_images(image, eyes_coords, idx):
+    b_boxes = bounding_boxes(eyes_coords, image)
+    """
+    #drawing bounding boxes
+    cv2.rectangle(annotated_image, (bounding_boxes["start_left_eye"]["x"], bounding_boxes["start_left_eye"]["y"]), (bounding_boxes["stop_left_eye"]["x"], bounding_boxes["stop_left_eye"]["y"]), ft.green, 4)
+    cv2.rectangle(annotated_image, (bounding_boxes["start_right_eye"]["x"], bounding_boxes["start_right_eye"]["y"]), (bounding_boxes["stop_right_eye"]["x"], bounding_boxes["stop_right_eye"]["y"]), ft.red, 4)
+    """
+    #creating new images with left and right eyes only
+    left_eye_image = image[b_boxes["start_left_eye"]["y"]:b_boxes["stop_left_eye"]["y"], b_boxes["start_left_eye"]["x"]:b_boxes["stop_left_eye"]["x"], :]
+    right_eye_image = image[b_boxes["start_right_eye"]["y"]:b_boxes["stop_right_eye"]["y"], b_boxes["start_right_eye"]["x"]:b_boxes["stop_right_eye"]["x"], :]
+    cv2.imshow("cropped_images", left_eye_image)
+    cv2.imshow("cropped_images", right_eye_image)
+    cv2.waitKey()
+
+    #saving cropped images
+    cv2.imwrite(cropped_images_path + "cropped_right_" + str(idx) + ".png", right_eye_image)
+    cv2.imwrite(cropped_images_path + "cropped_left_" + str(idx) + ".png", left_eye_image)
+    return left_eye_image, right_eye_image
+
 def change_rotation(image, name_class, idx):
     rows, cols = image.shape[:2]
     center = (rows/2, cols/2)
-    
-    #for angle in range(-35,35,5):
-    angle = 35
-    if angle:
-        rotate_matrix = cv2.getRotationMatrix2D(center = center, angle = angle, scale = 1)
-        rotated_image = cv2.warpAffine(src = image, M = rotate_matrix, dsize = (rows, cols), borderMode = cv2.BORDER_REPLICATE)
-        cv2.imwrite(cropped_images_path + name_class + str(idx) + "_angle_" + str(angle) + ".png", rotated_image)
+    for angle in range(-5,5,5):
+        if angle:
+            rotate_matrix = cv2.getRotationMatrix2D(center = center, angle = angle, scale = 1)
+            rotated_image = cv2.warpAffine(src = image, M = rotate_matrix, dsize = (rows, cols), borderMode = cv2.BORDER_REPLICATE)
+            cv2.imwrite(cropped_images_path + name_class + str(idx) + "_angle_" + str(angle) + ".png", rotated_image)
+            cv2.imshow("rotated_image",rotated_image)
+            cv2.waitKey()
+        
 
 def change_perspective(image, name_class, idx):
     rows, cols = image.shape[:2]
@@ -137,5 +157,5 @@ def change_perspective(image, name_class, idx):
     projective_matrix = cv2.getPerspectiveTransform(src_points, dst_points)
     cropped_image = cv2.warpPerspective(image, projective_matrix, (rows, cols), borderMode = cv2.BORDER_REPLICATE)
     cv2.imwrite(cropped_images_path + name_class + str(idx) + "_delta_" + str(delta) + ".png", cropped_image)
-    #cv2.imshow("cropped_image",cropped_image)
-    #cv2.waitKey()
+    cv2.imshow("cropped_image",cropped_image)
+    cv2.waitKey()
