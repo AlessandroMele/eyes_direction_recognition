@@ -11,7 +11,7 @@ mp_face_mesh = mp.solutions.face_mesh
 
 #getting images
 #files = ft.get_images()
-files = ['/Users/alessandro/Desktop/vscode/eyes_direction_recognition/dataset/original_images/alto_centro/0.38_0.07.png']
+files = ['/Users/alessandro/Desktop/vscode/eyes_direction_recognition/dataset/original_images/medio_sinistra/0.33_0.25_2.png']
 
 with mp_face_mesh.FaceMesh(static_image_mode = True, max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5) as face_mesh:
   for idx, file in enumerate(files):
@@ -37,17 +37,14 @@ with mp_face_mesh.FaceMesh(static_image_mode = True, max_num_faces = 1, refine_l
       #calculating bounding boxes
       left_eye_image, right_eye_image = ft.cropped_images(image,eyes_coords,idx)
 
-      
-      #change_perspective of eyes
-      """
-      ft.change_perspective(right_eye_image, "perspective_right_eye_", idx)
-      ft.change_perspective(left_eye_image, "perspective_left_eye_", idx)
-      """
-
       #change_rotation of eyes
       ft.change_rotation(right_eye_image, "rotated_right_eye_", idx)
       ft.change_rotation(left_eye_image, "rotated_left_eye_", idx)
       
+      #change_perspective of eyes
+      ft.change_perspective(right_eye_image, "perspective_right_eye_", idx)
+      ft.change_perspective(left_eye_image, "perspective_left_eye_", idx)
+
     except:
       print(f"Ops! Something went wrong with id: {str(idx)} ..., skipping item!")
       idx += 1
