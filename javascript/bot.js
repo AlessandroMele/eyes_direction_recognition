@@ -17,7 +17,15 @@ const y_basso = [376, 475];
     await page.setViewport({width: 1511, height: 792});
     await page.goto('https://edtech.westernu.edu/3D-eye-movement-simulator/');
     await delay(40000);
-
+    
+    //hiding blinking
+    await page.mouse.click(629, 674);
+    await delay(4000);
+    
+    //hiding text
+    await page.mouse.click(754, 674);
+    await delay(4000);
+    
     for (let x = x_destra[0]; x < x_sinistra[1]; x += 50){
         for (let y = y_alto[0]; y < y_basso[1]; y += 40){
             await delay(2000);

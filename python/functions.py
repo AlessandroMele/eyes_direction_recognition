@@ -18,7 +18,7 @@ rightEyeLower2 = [226, 31, 228, 229, 230, 231, 232, 233, 244]
 rightEyeLower3 = [143, 111, 117, 118, 119, 120, 121, 128, 245]
 rightEyebrowUpper = [156, 70, 63, 105, 66, 107, 55, 193]
 rightEyebrowLower = [35, 124, 46, 53, 52, 65]
-right_eye =  rightEyebrowLower + rightEyeUpper0 + rightEyeLower0  + rightEyeLower1 + rightEyeLower2 + rightEyeUpper1 + rightEyeUpper2 #+ rightEyeLower3
+right_eye =  rightEyebrowLower + rightEyeUpper0 + rightEyeLower0  + rightEyeLower1 + rightEyeLower2 + rightEyeUpper1 + rightEyeUpper2 + rightEyeLower3
 
 #left eye
 leftEyeUpper0 = [466, 388, 387, 386, 385, 384, 398]
@@ -30,7 +30,7 @@ leftEyeLower2 = [446, 261, 448, 449, 450, 451, 452, 453, 464]
 leftEyeLower3 = [372, 340, 346, 347, 348, 349, 350, 357, 465]
 leftEyebrowUpper = [383, 300, 293, 334, 296, 336, 285, 417]
 leftEyebrowLower = [265, 353, 276, 283, 282, 295]
-left_eye = leftEyebrowLower + leftEyeUpper0 + leftEyeLower0  + leftEyeLower1 + leftEyeLower2 + leftEyeUpper1 + leftEyeUpper2 #+ leftEyeLower3
+left_eye = leftEyebrowLower + leftEyeUpper0 + leftEyeLower0  + leftEyeLower1 + leftEyeLower2 + leftEyeUpper1 + leftEyeUpper2 + leftEyeLower3
 
 number_couple_eyes = len(left_eye)
 keypoints = left_eye + right_eye
@@ -121,7 +121,6 @@ def bounding_boxes(eyes_coords, image):
 
 def cropped_images(image, eyes_coords, idx):
     b_boxes = bounding_boxes(eyes_coords, image)
-    
     """
     #drawing bounding boxes
     cv2.rectangle(annotated_image, (bounding_boxes["start_left_eye"]["x"], bounding_boxes["start_left_eye"]["y"]), (bounding_boxes["stop_left_eye"]["x"], bounding_boxes["stop_left_eye"]["y"]), ft.green, 4)
@@ -129,8 +128,10 @@ def cropped_images(image, eyes_coords, idx):
     """
 
     #creating new images with left and right eyes only
-    left_eye_image = image[b_boxes["start_left_eye"]["y"]:b_boxes["stop_left_eye"]["y"], b_boxes["start_left_eye"]["x"]:b_boxes["stop_left_eye"]["x"], :]
-    right_eye_image = image[b_boxes["start_right_eye"]["y"]:b_boxes["stop_right_eye"]["y"], b_boxes["start_right_eye"]["x"]:b_boxes["stop_right_eye"]["x"], :]
+    left_eye_image = image[b_boxes["start_left_eye"]["y"]:b_boxes["stop_left_eye"]["y"],
+        b_boxes["start_left_eye"]["x"]:b_boxes["stop_left_eye"]["x"], :]
+    right_eye_image = image[b_boxes["start_right_eye"]["y"]:b_boxes["stop_right_eye"]["y"],
+        b_boxes["start_right_eye"]["x"]:b_boxes["stop_right_eye"]["x"], :]
     
     #cv2.imshow("cropped_images", left_eye_image)
     #cv2.imshow("cropped_images", right_eye_image)
@@ -146,7 +147,7 @@ def change_rotation(image, name_class, idx):
     for angle in range(-5,5,5):
         if angle:
             rotate_matrix = cv2.getRotationMatrix2D(center = center, angle = angle, scale = 1)
-            rotated_image = cv2.warpAffine(src = image, M = rotate_matrix, dsize = (rows, cols), borderMode = cv2.BORDER_REPLICATE)
+            rotated_image = cv2.warpAffine(src = image, M = rotate_matrix, dsize = (cols, rows), borderMode = cv2.BORDER_REPLICATE)
             
             cv2.imwrite(cropped_images_path + name_class + str(idx) + "_angle_" + str(angle) + ".png", rotated_image)
             #cv2.imshow("rotated_image",rotated_image)
@@ -164,7 +165,7 @@ def change_perspective(image, name_class, idx):
     else:
         dst_points = np.float32([[0,0], [cols,0], [cols + delta, rows + delta], [0 - delta, rows - delta]])
     projective_matrix = cv2.getPerspectiveTransform(src_points, dst_points)
-    cropped_image = cv2.warpPerspective(image, projective_matrix, (rows, cols), borderMode = cv2.BORDER_REPLICATE)
+    cropped_image = cv2.warpPerspective(image, projective_matrix, (cols, rows), borderMode = cv2.BORDER_REPLICATE)
     
     cv2.imwrite(cropped_images_path + name_class + str(idx) + "_delta_" + str(delta) + ".png", cropped_image)
     #cv2.imshow("cropped_image",cropped_image)
