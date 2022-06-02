@@ -1,31 +1,34 @@
 const puppeteer = require('puppeteer');
-const path = "/Users/alessandro/Desktop/vscode/deep_eyes_recognition/dataset/images_js/";
 
-const x_destra = [0, 273];
-const x_centro = [274, 325];
-const x_sinistra = [326, 781];
+//path where to save images
+const path = "/Users/alessandro/Desktop/vscode/eyes_direction_recognition/dataset/original_images/";
 
-const y_alto = [0, 217];
-const y_medio = [218, 317];
-const y_basso = [318, 677];
+const x_destra = [460, 670];
+const x_centro = [671, 800];
+const x_sinistra = [801, 1050];
+
+const y_alto = [205, 290];
+const y_medio = [291, 375];
+const y_basso = [376, 475];
 
 (async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
+    await page.setViewport({width: 1511, height: 792});
     await page.goto('https://edtech.westernu.edu/3D-eye-movement-simulator/');
-    await delay(50000);
+    await delay(40000);
 
-    for (let x = 0; x < x_sinistra[1]; x += 15){
-        for (let y = 0; y < y_basso[1]; y += 15){
-            delay(1000);
+    for (let x = x_destra[0]; x < x_sinistra[1]; x += 50){
+        for (let y = y_alto[0]; y < y_basso[1]; y += 40){
+            await delay(2000);
             await page.mouse.move(x, y);
             
-            let percentuale_orizzontale = (x/x_sinistra[1]).toFixed(2);
-            let percentuale_verticale = (y/y_basso[1]).toFixed(2);
+            let percentuale_orizzontale = ((x-x_destra[0])/x_sinistra[1]).toFixed(2);
+            let percentuale_verticale = ((y-y_alto[0])/y_basso[1]).toFixed(2);
             
-            // sguardo alto destra 
+            // sguardo alto destra
             if( (x >= x_destra[0] && x <= x_destra[1]) && (y >= y_alto[0] && y <= y_alto[1]) )
-                await page.screenshot({ path: `${path}alto_destra/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${path}/alto_destra/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             // sguardo alto centro 
             else if((x >= x_centro[0] && x <= x_centro[1]) && (y >= y_alto[0] && y <= y_alto[1]) )
                 await page.screenshot({ path: `${path}/alto_centro/${percentuale_orizzontale}_${percentuale_verticale}.png`});
@@ -55,6 +58,6 @@ const y_basso = [318, 677];
         }
     }
     await browser.close();
-})();
+    })();
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));

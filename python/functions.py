@@ -44,21 +44,26 @@ other_keypoints = [x for x in num_all_landmark if x not in keypoints]
 def recognize_landmark(values):
     for item in left_eye:
         if(item == values):
-             return "left_eye"
+            
+            return "left_eye"
     for item in right_eye:
         if(item == values):
+            
             return "right_eye"
+    
     return "other"
 
 #path dirs
-json_path = os.getcwd() + "/dataset/json_annotation/"
-annotated_images_path = os.getcwd() + "/dataset/annotated_images/"
-cropped_images_path = os.getcwd() + "/dataset/cropped_images/"
-original_images_path = os.getcwd() + "/dataset/original_images/"
+path = os.getcwd()
+json_path = path + "/dataset/json_annotation/"
+annotated_images_path = path + "/dataset/annotated_images/"
+cropped_images_path = path + "/dataset/cropped_images/"
+original_images_path = path + "/dataset/original_images/"
 
 #return a list of path of images
 def get_images():
     files = [str(original_images_path + image) for image in os.listdir(original_images_path)]
+    
     return files
 
 #writing json
@@ -78,6 +83,7 @@ def calculate_keypoints(face_landmarks):
         if(landmark == "right_eye"):
             right_eye.append(face_landmarks.landmark[l])
             list_right_eye.append({"x":face_landmarks.landmark[l].x, "y": face_landmarks.landmark[l].y})
+    
     return { "right_eye": list_right_eye, "left_eye": list_left_eye}, [left_eye, right_eye]
 
 #getting bounding boxes of a single image
@@ -85,7 +91,6 @@ def bounding_boxes(eyes_coords, image):
     bounding_boxes = {}
     x_list, y_list = [], []
     for item in eyes_coords["left_eye"]:
-        
         #saving all x and y values for scanning maximum and minimum
         x_list.append(item["x"])
         y_list.append(item["y"])
@@ -111,22 +116,25 @@ def bounding_boxes(eyes_coords, image):
     bounding_boxes.update({"stop_right_eye":
     { "x": int(max(x_list)*image.shape[1]),
     "y": int(max(y_list)*image.shape[0])} })
+    
     return bounding_boxes
 
 def cropped_images(image, eyes_coords, idx):
     b_boxes = bounding_boxes(eyes_coords, image)
+    
     """
     #drawing bounding boxes
     cv2.rectangle(annotated_image, (bounding_boxes["start_left_eye"]["x"], bounding_boxes["start_left_eye"]["y"]), (bounding_boxes["stop_left_eye"]["x"], bounding_boxes["stop_left_eye"]["y"]), ft.green, 4)
     cv2.rectangle(annotated_image, (bounding_boxes["start_right_eye"]["x"], bounding_boxes["start_right_eye"]["y"]), (bounding_boxes["stop_right_eye"]["x"], bounding_boxes["stop_right_eye"]["y"]), ft.red, 4)
     """
+
     #creating new images with left and right eyes only
     left_eye_image = image[b_boxes["start_left_eye"]["y"]:b_boxes["stop_left_eye"]["y"], b_boxes["start_left_eye"]["x"]:b_boxes["stop_left_eye"]["x"], :]
     right_eye_image = image[b_boxes["start_right_eye"]["y"]:b_boxes["stop_right_eye"]["y"], b_boxes["start_right_eye"]["x"]:b_boxes["stop_right_eye"]["x"], :]
-    cv2.imshow("cropped_images", left_eye_image)
-    cv2.imshow("cropped_images", right_eye_image)
-    cv2.waitKey()
-
+    
+    #cv2.imshow("cropped_images", left_eye_image)
+    #cv2.imshow("cropped_images", right_eye_image)
+    #cv2.waitKey()
     #saving cropped images
     cv2.imwrite(cropped_images_path + "cropped_right_" + str(idx) + ".png", right_eye_image)
     cv2.imwrite(cropped_images_path + "cropped_left_" + str(idx) + ".png", left_eye_image)
@@ -139,9 +147,10 @@ def change_rotation(image, name_class, idx):
         if angle:
             rotate_matrix = cv2.getRotationMatrix2D(center = center, angle = angle, scale = 1)
             rotated_image = cv2.warpAffine(src = image, M = rotate_matrix, dsize = (rows, cols), borderMode = cv2.BORDER_REPLICATE)
+            
             cv2.imwrite(cropped_images_path + name_class + str(idx) + "_angle_" + str(angle) + ".png", rotated_image)
-            cv2.imshow("rotated_image",rotated_image)
-            cv2.waitKey()
+            #cv2.imshow("rotated_image",rotated_image)
+            #cv2.waitKey()
         
 
 def change_perspective(image, name_class, idx):
@@ -156,6 +165,7 @@ def change_perspective(image, name_class, idx):
         dst_points = np.float32([[0,0], [cols,0], [cols + delta, rows + delta], [0 - delta, rows - delta]])
     projective_matrix = cv2.getPerspectiveTransform(src_points, dst_points)
     cropped_image = cv2.warpPerspective(image, projective_matrix, (rows, cols), borderMode = cv2.BORDER_REPLICATE)
+    
     cv2.imwrite(cropped_images_path + name_class + str(idx) + "_delta_" + str(delta) + ".png", cropped_image)
-    cv2.imshow("cropped_image",cropped_image)
-    cv2.waitKey()
+    #cv2.imshow("cropped_image",cropped_image)
+    #cv2.waitKey()
