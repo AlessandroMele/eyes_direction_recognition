@@ -24,7 +24,7 @@ Rotazione:
 <img src="readme_materials/files/rotated_right_eye_0_angle_-5.png" width="100" height="100">
 Prospettiva:
 <img src="readme_materials/files/perspective_left_eye_0_delta_30.png" width="100" height="100">
-<img src="readme_materials/FILES/perspective_right_eye_0_delta_30.png" width="100" height="100">
+<img src="readme_materials/files/perspective_right_eye_0_delta_30.png" width="100" height="100">
 Curva di colore:
 <img src="readme_materials/files/color.png" width="300" height="300">
 
