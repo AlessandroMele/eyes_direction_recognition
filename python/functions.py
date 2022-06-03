@@ -18,7 +18,7 @@ rightEyeLower2 = [226, 31, 228, 229, 230, 231, 232, 233, 244]
 rightEyeLower3 = [143, 111, 117, 118, 119, 120, 121, 128, 245]
 rightEyebrowUpper = [156, 70, 63, 105, 66, 107, 55, 193]
 rightEyebrowLower = [35, 124, 46, 53, 52, 65]
-right_eye =  rightEyebrowLower + rightEyeUpper0 + rightEyeLower0  + rightEyeLower1 + rightEyeLower2 + rightEyeUpper1 + rightEyeUpper2 + rightEyeLower3
+right_eye =  rightEyebrowLower + rightEyeUpper0 + rightEyeLower0  + rightEyeLower1 + rightEyeLower2 + rightEyeUpper1 + rightEyeUpper2 + rightEyeLower3 + rightEyebrowUpper
 
 #left eye
 leftEyeUpper0 = [466, 388, 387, 386, 385, 384, 398]
@@ -30,7 +30,7 @@ leftEyeLower2 = [446, 261, 448, 449, 450, 451, 452, 453, 464]
 leftEyeLower3 = [372, 340, 346, 347, 348, 349, 350, 357, 465]
 leftEyebrowUpper = [383, 300, 293, 334, 296, 336, 285, 417]
 leftEyebrowLower = [265, 353, 276, 283, 282, 295]
-left_eye = leftEyebrowLower + leftEyeUpper0 + leftEyeLower0  + leftEyeLower1 + leftEyeLower2 + leftEyeUpper1 + leftEyeUpper2 + leftEyeLower3
+left_eye = leftEyebrowLower + leftEyeUpper0 + leftEyeLower0  + leftEyeLower1 + leftEyeLower2 + leftEyeUpper1 + leftEyeUpper2 + leftEyeLower3 + leftEyebrowUpper
 
 number_couple_eyes = len(left_eye)
 keypoints = left_eye + right_eye
@@ -134,10 +134,10 @@ def cropped_images(image, eyes_coords, idx):
     right_eye_image = image[b_boxes["start_right_eye"]["y"]:b_boxes["stop_right_eye"]["y"],
         b_boxes["start_right_eye"]["x"]:b_boxes["stop_right_eye"]["x"], :]
     
-    #cv2.imshow("cropped_images", left_eye_image)
-    #cv2.waitKey()
-    #cv2.imshow("cropped_images", right_eye_image)
-    #cv2.waitKey()
+    cv2.imshow("cropped_images", left_eye_image)
+    cv2.waitKey()
+    cv2.imshow("cropped_images", right_eye_image)
+    cv2.waitKey()
     #saving cropped images
     cv2.imwrite(cropped_images_path + "cropped_right_" + str(idx) + ".png", right_eye_image)
     cv2.imwrite(cropped_images_path + "cropped_left_" + str(idx) + ".png", left_eye_image)
@@ -159,14 +159,14 @@ def change_rotation(image, name_class, idx):
 def change_perspective(image, name_class, idx):
     rows, cols = image.shape[:2]
     src_points = np.float32([[0,0], [cols,0], [cols,rows], [0,rows]])
-    delta = 30
-    #right
+    delta = 80
+    
     if name_class == "perspective_right_eye_":
-        dst_points = np.float32([[0 + delta, 0 + delta], [cols,0], [cols, rows], [0 + delta, rows + delta]])
+        #right
+        dst_points = np.float32([[0 + delta,0 + delta], [cols,0], [cols, rows], [0 + delta, rows + delta]])
     else:
         #left
-        dst_points = np.float32([[0,0], [cols + delta,0 + delta], [cols + delta, rows + delta], [0, rows]])
-
+        dst_points = np.float32([[0, 0], [cols - delta,0 + delta], [cols - delta, rows + delta], [0, rows]])
     projective_matrix = cv2.getPerspectiveTransform(src_points, dst_points)
     perspective_image = cv2.warpPerspective(image, projective_matrix, (cols, rows), borderMode = cv2.BORDER_REPLICATE)
     
