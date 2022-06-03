@@ -11,7 +11,7 @@ mp_face_mesh = mp.solutions.face_mesh
 
 #getting images
 #files = ft.get_images()
-files = ['/Users/alessandro/Desktop/vscode/eyes_direction_recognition/dataset/original_images/medio_sinistra/0.33_0.25_2.png']
+files = ['/Users/alessandro/Desktop/vscode/eyes_direction_recognition/dataset/original_images/alto_centro/0.24_0.00.png']
 
 with mp_face_mesh.FaceMesh(static_image_mode = True, max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5) as face_mesh:
   for idx, file in enumerate(files):
@@ -33,7 +33,8 @@ with mp_face_mesh.FaceMesh(static_image_mode = True, max_num_faces = 1, refine_l
           #drawing keypoints of eyes
           mp_drawing.draw_landmarks(image = annotated_image, landmark_list = landmark_pb2.NormalizedLandmarkList(landmark = eyes_face_landmarks[0]),landmark_drawing_spec = mp_drawing.DrawingSpec(color=ft.green, thickness=4, circle_radius=1))
           mp_drawing.draw_landmarks(image = annotated_image, landmark_list = landmark_pb2.NormalizedLandmarkList(landmark = eyes_face_landmarks[1]), landmark_drawing_spec = mp_drawing.DrawingSpec(color=ft.red, thickness=4, circle_radius=1))
-    
+
+      cv2.imwrite(ft.cropped_images_path + "image_" + str(idx) + ".png", annotated_image)
       #calculating bounding boxes
       left_eye_image, right_eye_image = ft.cropped_images(image,eyes_coords,idx)
 

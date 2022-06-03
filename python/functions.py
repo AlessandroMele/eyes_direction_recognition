@@ -57,7 +57,8 @@ def recognize_landmark(values):
 path = os.getcwd()
 json_path = path + "/dataset/json_annotation/"
 annotated_images_path = path + "/dataset/annotated_images/"
-cropped_images_path = path + "/dataset/cropped_images/"
+#cropped_images_path = path + "/dataset/cropped_images/"
+cropped_images_path = "/Users/alessandro/Desktop/"
 original_images_path = path + "/dataset/original_images/"
 
 #return a list of path of images
@@ -133,41 +134,42 @@ def cropped_images(image, eyes_coords, idx):
     right_eye_image = image[b_boxes["start_right_eye"]["y"]:b_boxes["stop_right_eye"]["y"],
         b_boxes["start_right_eye"]["x"]:b_boxes["stop_right_eye"]["x"], :]
     
-    cv2.imshow("cropped_images", left_eye_image)
-    cv2.waitKey()
-    cv2.imshow("cropped_images", right_eye_image)
-    cv2.waitKey()
+    #cv2.imshow("cropped_images", left_eye_image)
+    #cv2.waitKey()
+    #cv2.imshow("cropped_images", right_eye_image)
+    #cv2.waitKey()
     #saving cropped images
-    #cv2.imwrite(cropped_images_path + "cropped_right_" + str(idx) + ".png", right_eye_image)
-    #cv2.imwrite(cropped_images_path + "cropped_left_" + str(idx) + ".png", left_eye_image)
+    cv2.imwrite(cropped_images_path + "cropped_right_" + str(idx) + ".png", right_eye_image)
+    cv2.imwrite(cropped_images_path + "cropped_left_" + str(idx) + ".png", left_eye_image)
     return left_eye_image, right_eye_image
 
 def change_rotation(image, name_class, idx):
     rows, cols = image.shape[:2]
     center = (rows/2, cols/2)
-    for angle in range(-5,5,5):
-        if angle:
+    for angle in range(-5,5,10):
+        if angle != 0:
             rotate_matrix = cv2.getRotationMatrix2D(center = center, angle = angle, scale = 1)
             rotated_image = cv2.warpAffine(src = image, M = rotate_matrix, dsize = (cols, rows), borderMode = cv2.BORDER_REPLICATE)
             
-            #cv2.imwrite(cropped_images_path + name_class + str(idx) + "_angle_" + str(angle) + ".png", rotated_image)
-            cv2.imshow("rotated_image",rotated_image)
-            cv2.waitKey()
+            cv2.imwrite(cropped_images_path + name_class + str(idx) + "_angle_" + str(angle) + ".png", rotated_image)
+            #cv2.imshow("rotated_image",rotated_image)
+            #cv2.waitKey()
         
 
 def change_perspective(image, name_class, idx):
     rows, cols = image.shape[:2]
     src_points = np.float32([[0,0], [cols,0], [cols,rows], [0,rows]])
-    
-    #for delta in range(0,60,10):
     delta = 30
+    #right
     if name_class == "perspective_right_eye_":
-        dst_points = np.float32([[0,0], [cols,0], [cols - delta, rows - delta], [0 + delta, rows + delta]])
+        dst_points = np.float32([[0 + delta, 0 + delta], [cols,0], [cols, rows], [0 + delta, rows + delta]])
     else:
-        dst_points = np.float32([[0,0], [cols,0], [cols + delta, rows + delta], [0 - delta, rows - delta]])
+        #left
+        dst_points = np.float32([[0,0], [cols + delta,0 + delta], [cols + delta, rows + delta], [0, rows]])
+
     projective_matrix = cv2.getPerspectiveTransform(src_points, dst_points)
-    cropped_image = cv2.warpPerspective(image, projective_matrix, (cols, rows), borderMode = cv2.BORDER_REPLICATE)
+    perspective_image = cv2.warpPerspective(image, projective_matrix, (cols, rows), borderMode = cv2.BORDER_REPLICATE)
     
-    #cv2.imwrite(cropped_images_path + name_class + str(idx) + "_delta_" + str(delta) + ".png", cropped_image)
-    cv2.imshow("change_perspective",cropped_image)
+    cv2.imwrite(cropped_images_path + name_class + str(idx) + "_delta_" + str(delta) + ".png", perspective_image)
+    cv2.imshow("perspective_image",perspective_image)
     cv2.waitKey()
