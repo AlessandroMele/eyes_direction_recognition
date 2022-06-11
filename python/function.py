@@ -10,9 +10,9 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_face_mesh = mp.solutions.face_mesh
 
-json_path = os.getcwd() + "/dataset/json_annotation"
-original_path = os.getcwd() + "/dataset/original_images"
-cropped_path = os.getcwd() + "/dataset/cropped_images"
+json_path = os.getcwd() + "/dataset/json_annotation/"
+original_path = os.getcwd() + "/dataset/original_images/"
+cropped_path = os.getcwd() + "/dataset/cropped_images/"
 
 #return a list of path of images
 def get_images(path_images):
@@ -21,8 +21,8 @@ def get_images(path_images):
     return files, names
 
 #writing json
-def write_json(items, file_name, cls = None):
-    with open(json_path + file_name + ".json", "w") as file:
+def write_json(path, name, items, cls = None):
+    with open(path + name, "w") as file:
         file.write(json.dumps(items, indent = 2, sort_keys = True, cls = cls))
 
 #getting keypoints of right and left eye
@@ -80,7 +80,7 @@ def cropped_images(image, eyes_coords):
         b_boxes["start_left_eye"]["x"]:b_boxes["stop_left_eye"]["x"], :]
     right_eye_image = image[b_boxes["start_right_eye"]["y"]:b_boxes["stop_right_eye"]["y"],
         b_boxes["start_right_eye"]["x"]:b_boxes["stop_right_eye"]["x"], :]
-    return left_eye_image, right_eye_image
+    return b_boxes, left_eye_image, right_eye_image
 
 def change_rotation(image, path):
     rows, cols = image.shape[:2]
@@ -105,19 +105,20 @@ def change_perspective(image, path):
     perspective_image_right = cv2.warpPerspective(image, projective_matrix_right, (cols, rows), borderMode = cv2.BORDER_REPLICATE)
     perspective_image_left = cv2.warpPerspective(image, projective_matrix_left, (cols, rows), borderMode = cv2.BORDER_REPLICATE)
     
-    cv2.imwrite(path[:-4] + "_perspective_right.png", perspective_image_right)
-    cv2.imwrite(path[:-4] + "_perspective_left.png", perspective_image_left)
+    #cv2.imwrite(path[:-4] + "_perspective_right.png", perspective_image_right)
+    #cv2.imwrite(path[:-4] + "_perspective_left.png", perspective_image_left)
 
 def data_augmentation(class_image):
-    files, names = get_images(original_path + class_image)
+    files, name_files = get_images(original_path + class_image)
     for file in files:
         image = cv2.imread(file)
         change_perspective(image, file)
         change_rotation(image, file)
 
-def face_mesh(class_image):
+def face_mesh(class_image, num):
   #getting images
   files, name_files = get_images(original_path + class_image)
+  bounding_boxes_list = []
   with mp_face_mesh.FaceMesh(static_image_mode = True, max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5) as face_mesh:
     for idx, file in enumerate(files):
         #reading and processing image
@@ -142,7 +143,9 @@ def face_mesh(class_image):
                 landmark_drawing_spec = mp_drawing.DrawingSpec(color=landmarks.red, thickness=4, circle_radius=1))
 
                 #calculating bounding boxes and creating new images with left and right eyes only
-                left_eye_image, right_eye_image = cropped_images(image, eyes_coords)
-                cv2.imwrite(cropped_path + class_image + name_files[idx][:-4] + "_cropped_right.png", right_eye_image)
-                cv2.imwrite(cropped_path + class_image + name_files[idx][:-4] + "_cropped_left.png", left_eye_image)
+                b_boxes, left_eye_image, right_eye_image = cropped_images(image, eyes_coords)
+                bounding_boxes_list.append(b_boxes)
+                #cv2.imwrite(cropped_path + class_image + name_files[idx][:-4] + "_cropped_right.png", right_eye_image)
+                #cv2.imwrite(cropped_path + class_image + name_files[idx][:-4] + "_cropped_left.png", left_eye_image)
                 idx += 1
+    #write_json(cropped_path, "bounding_boxes_list_" + str(num) + ".json", bounding_boxes_list)
