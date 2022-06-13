@@ -1,7 +1,8 @@
-const puppeteer = require('puppeteer');
+const path = require('./path.js');
+save_path = path.save_path;
+classes = path.classes;
 
-//path where to save images
-const path = "/Users/alessandro/Desktop/vscode/eyes_direction_recognition/dataset/original_images/";
+const puppeteer = require('puppeteer');
 
 const x_destra = [460, 670];
 const x_centro = [671, 800];
@@ -36,31 +37,31 @@ const y_basso = [376, 475];
             
             // sguardo alto destra
             if( (x >= x_destra[0] && x <= x_destra[1]) && (y >= y_alto[0] && y <= y_alto[1]) )
-                await page.screenshot({ path: `${path}/alto_destra/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[0]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             // sguardo alto centro 
             else if((x >= x_centro[0] && x <= x_centro[1]) && (y >= y_alto[0] && y <= y_alto[1]) )
-                await page.screenshot({ path: `${path}/alto_centro/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[1]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             // sguardo alto sinistra 
             else if( (x >= x_sinistra[0] && x <= x_sinistra[1]) && (y >= y_alto[0] && y <= y_alto[1]) )
-                await page.screenshot({ path: `${path}/alto_sinistra/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[2]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             //sguardo medio destra
             else if( (x >= x_destra[0] && x <= x_destra[1]) && (y >= y_medio[0] && y <= y_medio[1]) )
-                await page.screenshot({ path: `${path}/medio_destra/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[3]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             //sguardo medio centro
             else if( (x >= x_centro[0] && x <= x_centro[1]) && (y > y_medio[0] && y <= y_medio[1]) )
-                await page.screenshot({ path: `${path}/medio_centro/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[4]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             //sguardo medio sinistra
             else if( (x >= x_sinistra[0] && x <= x_sinistra[1]) && (y >= y_medio[0] && y <= y_medio[1]) )
-                await page.screenshot({ path: `${path}/medio_sinistra/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[5]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             //sguardo basso destra
             else if( (x >= x_destra[0] && x <= x_destra[1]) && (y >= y_basso[0] && y <= y_basso[1]) )
-                await page.screenshot({ path: `${path}/basso_destra/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[6]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             //sguardo basso centro
             else if( (x >= x_centro[0] && x <= x_centro[1]) && (y >= y_basso[0] && y <= y_basso[1]) )
-                await page.screenshot({ path: `${path}/basso_centro/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[7]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             //sguardo basso sinistra
             else if( (x >= x_sinistra[0] && x <= x_sinistra[1]) && (y >= y_basso[0] && y <= y_basso[1]) )
-                await page.screenshot({ path: `${path}/basso_sinistra/${percentuale_orizzontale}_${percentuale_verticale}.png`});
+                await page.screenshot({ path: `${save_path}/${classes[8]}/${percentuale_orizzontale}_${percentuale_verticale}.png`});
             else
                 console.log("not recognized");
         }
