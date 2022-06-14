@@ -1,36 +1,52 @@
 import functions as ft
 import os
 
-#original
+#path
 source_path = os.getcwd() + "/dataset/bot_images/"
 data_aug_path = os.getcwd() + "/dataset/augmented_images/"
-face_mesh_path = os.getcwd() + "/dataset/cropped_images/"
+face_mesh_path = os.getcwd() + "/dataset/train/"
 
-#custom
+#custom path
 #source_path = ""
 #data_aug_path = ""
 #face_mesh_path = ""
 
-#step 1
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/alto_centro/")
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/alto_destra/")
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/alto_sinistra/")
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/basso_centro/")
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/basso_destra/")
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/basso_sinistra/")
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/medio_centro/")
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/medio_destra/")
-ft.data_augmentation(source_path, data_aug_path, folder_class = "/medio_sinistra/")
+#size for output images
+new_dim = (100, 100)
+
+#custom size
+#new_dim = (,)
+
+"""
+STEP 1
+data augmentation offline, making:
+    - rotations of -5 and 5 degrees;
+    - warping perspective by a delta factor of 80
+    - !!! color curve has been applied using a GIMP module called BIMP !!!
+"""
+
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/high_center/")
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/high_right/")
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/high_left/")
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/low_center/")
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/low_right/")
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/low_left/")
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/middle_center/")
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/middle_right/")
+ft.data_augmentation(source_path, data_aug_path, folder_class = "/middle_left/")
 print("Data augmentation: completed!")
 
-#step 2
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/alto_centro/")
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/alto_destra/")
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/alto_sinistra/")
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/basso_centro/")
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/basso_destra/")
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/basso_sinistra/")
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/medio_centro/")
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/medio_destra/")
-ft.face_mesh(data_aug_path, face_mesh_path, folder_class = "/medio_sinistra/")
-print("Face mesh: completed!")
+"""
+STEP 2
+Applying facemesh modules for cutting eyes using bounding boxes, then resizing by custom size
+"""
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/high_center/")
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/high_right/")
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/high_left/")
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/low_center/")
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/low_right/")
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/low_left/")
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/middle_center/")
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/middle_right/")
+ft.face_mesh(new_dim, data_aug_path, face_mesh_path, folder_class = "/middle_left/")
+print("face mesh: completed!")
