@@ -1,5 +1,18 @@
 #dataset images
-dataset
+dataset/augmented_images
+dataset/bot_images
+dataset/test
+dataset/train/high_center
+dataset/train/high_left
+dataset/train/high_right
+dataset/train/middle_center
+dataset/train/middle_right
+dataset/train/middle_left
+dataset/train/low_center
+dataset/train/low_left
+dataset/train/low_right
+dataset/color_curve
+
 
 #javascript node modules and linter
 javascript/node_modules
