@@ -2,17 +2,12 @@
 dataset/augmented_images
 dataset/bot_images
 dataset/test
-dataset/train/high_center
-dataset/train/high_left
-dataset/train/high_right
-dataset/train/middle_center
-dataset/train/middle_right
-dataset/train/middle_left
-dataset/train/low_center
-dataset/train/low_left
-dataset/train/low_right
+dataset/train_classification
+dataset/train_regression
 dataset/color_curve
 
+dataset/train_classification.zip
+dataset/train_regression.zip
 
 #javascript node modules and linter
 javascript/node_modules
