@@ -1,9 +1,11 @@
+#importing modules
 import os
 import cv2
 import numpy as np
 import mediapipe as mp
 import landmarks
 
+#mediapipe solutions
 from mediapipe.framework.formats import landmark_pb2
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -21,6 +23,7 @@ def get_images(path_images):
     return files, names
 
 def change_rotation(image, folder_class, name_file, dest_path):
+    
     #geting images shape
     rows, cols = image.shape[:2]
     center = (rows/2, cols/2)
@@ -34,6 +37,7 @@ def change_rotation(image, folder_class, name_file, dest_path):
         cv2.imwrite(dest_path +folder_class + name_file + "_angle_" + str(angle) + ".png", rotated_image)
         
 def change_perspective(image, folder_class, name_file, dest_path):
+    
     #source points
     rows, cols = image.shape[:2]
     src_points = np.float32([[0,0], [cols,0], [cols,rows], [0,rows]])
@@ -56,18 +60,27 @@ def change_perspective(image, folder_class, name_file, dest_path):
     cv2.imwrite(dest_path + folder_class + name_file + "_warp_left.png", perspective_image_left)
 
 def square_image(image, new_dim):
+    #images shapes
     width, height = image.shape[1], image.shape[0]
+    
+    #crop shapes
     crop_width = new_dim[0] if new_dim[0]<image.shape[1] else image.shape[1]
     crop_height = new_dim[1] if new_dim[1]<image.shape[0] else image.shape[0] 
+    
+    #new shapes
     mid_x, mid_y = int(width/2), int(height/2)
     cw2, ch2 = int(crop_width/2), int(crop_height/2) 
-    crop_image = image[mid_y-ch2:mid_y+ch2, mid_x-cw2:mid_x+cw2]
+    
+    #cropping
+    crop_image = image[mid_y-ch2 : mid_y+ch2, mid_x-cw2 : mid_x+cw2]
 
     return crop_image
 
 def data_augmentation(source_path, dest_path, folder_class = ""):
+    
     #getting path and name images
     path_files, name_files = get_images(source_path + folder_class)
+    
     #making data augmentation
     for path_file, name_file in zip(path_files, name_files):
         try:
@@ -83,8 +96,10 @@ def data_augmentation(source_path, dest_path, folder_class = ""):
 
 #getting keypoints of right and left eye
 def calculate_keypoints(face_landmarks):
+    
     right_eye, left_eye = [], []
     list_right_eye, list_left_eye = [], []
+    
     #scanning landmarks and filtering for type
     for l in landmarks.num_all_landmark:
         landmark = landmarks.recognize_landmark(l)
@@ -101,6 +116,7 @@ def calculate_keypoints(face_landmarks):
 
 #getting bounding boxes of a single image
 def bounding_boxes(eyes_coords, image):
+    
     bounding_boxes = {}
 
     #saving all x and y values for scanning maximum and minimum from left eye
@@ -126,7 +142,8 @@ def bounding_boxes(eyes_coords, image):
     return bounding_boxes
 
 def split_image(image, eyes_coords):
-    #getting xy coords for max bounding boxes of left and right eyes
+    
+    #getting x,y coords for max bounding boxes of left and right eyes
     b_boxes = bounding_boxes(eyes_coords, image)
 
     #creating new images with left and right eyes only
@@ -136,8 +153,10 @@ def split_image(image, eyes_coords):
     return left_eye_image, right_eye_image
 
 def face_mesh(new_dim, source_path, dest_path, folder_class = ""):
+  
   #getting images
   files, name_files = get_images(source_path + folder_class)
+  
   with mp_face_mesh.FaceMesh(static_image_mode = True, max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5) as face_mesh:
     for idx, file in enumerate(files):
         #reading and processing image
@@ -151,6 +170,7 @@ def face_mesh(new_dim, source_path, dest_path, folder_class = ""):
                 annotated_image = image.copy()
                 
                 for face_landmarks in results.multi_face_landmarks:
+                    
                     #return a dict containing coords about right and left eyes
                     eyes_coords, eyes_face_landmarks = calculate_keypoints(face_landmarks)
                     

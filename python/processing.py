@@ -15,7 +15,7 @@ face_mesh_path = os.getcwd() + "/dataset/train/"
 new_dim = (100, 100)
 
 #custom size
-#new_dim = (,)
+#new_dim = ( , )
 
 """
 STEP 1
