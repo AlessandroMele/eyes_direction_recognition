@@ -55,8 +55,8 @@ Struttura cartelle:
 <img src="images/Schermata.png" width="600px" height="300px">
 
 ## Data augmentation e FaceMesh
-La parte relativa alla data augmentation e FaceMesh è interamente contenuta nella cartella Python.<br />
-Si è applicata della data augmentation:
+La parte relativa alla data augmentation e [FaceMesh](https://google.github.io/mediapipe/solutions/face_mesh.html) è interamente contenuta nella cartella Python.<br />
+Si è applicata della data augmentation:<br />
 Applicazione di curve di colore dell'immagine (tramite un modulo esterno chiamato [BIMP](https://alessandrofrancesconi.it/projects/bimp/): <br />
 <img src="images/0.51_0.30_2.png" width="600px" height="300px">
 
