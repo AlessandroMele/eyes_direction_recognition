@@ -1,25 +1,12 @@
 #dataset images
-dataset/augmented_images
-dataset/bot_images
-dataset/test
-dataset/train_classification
-dataset/train_regression
-dataset/color_curve
-
-#dataset/train_classification.zip
-dataset/train_regression.zip
+dataset
+model 
 
 #javascript node modules and linter
 javascript/node_modules
 javascript/.jshintrc
 
-#python 
-python/__pycache__
-
-#modifiable files
-readme_materials/files/2329.eps
-readme_materials/files/map.psd
-readme_materials/files/logo.psd
+Presentazione_CV&DL.pptx
 
 #don't understand what is it :')
 .DS_Store
