@@ -7,7 +7,7 @@ L'obiettivo del seguente progetto didattico è la realizzazione di un modello De
 ## Generazione immagini
 Il codice relativo alla cattura delle schermate è interamente contenuto nella cartella Javascript, per eseguirlo è necessario aver installato Node.JS <br />
 Il dataset è stato creato realizzando un bot in Node.JS che acquisisse in maniera automatica le schermate della pagina web di un simulatore del volto umano. <br />
-Il simulatore è disponibile al seguente link: https://edtech.westernu.edu/3D-eye-movement-simulator/. <br />
+Il simulatore è disponibile al seguente [link](https://edtech.westernu.edu/3D-eye-movement-simulator/). <br />
 E' inoltre presente un file di configurazione config.js, dove specificare:
 ```bash
 //path where to save images
@@ -57,7 +57,7 @@ Struttura cartelle:
 ## Data augmentation e FaceMesh
 La parte relativa alla data augmentation e FaceMesh è interamente contenuta nella cartella Python.<br />
 Si è applicata della data augmentation:
-Applicazione di curve di colore dell'immagine (tramite un modulo esterno chiamato BIMP, link: https://alessandrofrancesconi.it/projects/bimp/): <br />
+Applicazione di curve di colore dell'immagine (tramite un modulo esterno chiamato [BIMP](https://alessandrofrancesconi.it/projects/bimp/): <br />
 <img src="images/0.51_0.30_2.png" width="600px" height="300px">
 
 Rotazioni (+- 5°): <br />
@@ -78,4 +78,4 @@ Per ultimo, tali immagini sono state ridimensionate come un quadrato di dimensio
 Tali immagini sono organizzate in maniera analoga a quelle precedenti, in un'altra cartella chiamata train.
 
 # Modelli
-I dataset di regressione e di classificazione sono disponibili al seguente link: https://drive.google.com/drive/folders/1CYh07UE_v58td-wKqa1jO1x-bAOt65gS?usp=sharing
+I dataset di regressione e di classificazione sono disponibili al seguente [link](https://drive.google.com/drive/folders/1QZtyXVt7jE0Fdy4MyMG8Vjq0Oe6Rmt3Y?usp=sharing)
