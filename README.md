@@ -1,4 +1,4 @@
-# Deep Eyes Recognition
+# Eyes direction recognition
 
 # Obiettivi
 L'obiettivo del seguente progetto didattico è la realizzazione di un modello Deep Learning di classificazione e regressione per il rilevamento della direzione degli occhi di volti acquisiti in maniera automatica mediante un simulatore.
@@ -78,4 +78,4 @@ Per ultimo, tali immagini sono state ridimensionate come un quadrato di dimensio
 Tali immagini sono organizzate in maniera analoga a quelle precedenti, in un'altra cartella chiamata train.
 
 # Modelli
-I dataset di regressione e di classificazione sono disponibili al seguente [link](https://drive.google.com/drive/folders/1QZtyXVt7jE0Fdy4MyMG8Vjq0Oe6Rmt3Y?usp=sharing)
+I dataset di regressione e di classificazione sono disponibili al seguente [link](https://drive.google.com/drive/folders/1CYh07UE_v58td-wKqa1jO1x-bAOt65gS?usp=sharing)
