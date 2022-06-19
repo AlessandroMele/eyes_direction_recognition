@@ -49,7 +49,7 @@ node bot.js
 
 Le immagini vengono salvate:
 - con il nome composto dalle coordinate normalizzate rispetto ai valori massimi e minimi di coords;
-- nella cartella opportuna tramite i filtri con le coordinate.
+- nella directory bot_images, all'interno della sottocartella risultante dai filtri.
 <img src="images/0.51_0.30.png" width="600px" height="300px">
 Struttura cartelle:
 <img src="images/Schermata.png" width="600px" height="300px">
@@ -57,7 +57,7 @@ Struttura cartelle:
 ## Data augmentation e FaceMesh
 La parte relativa alla data augmentation e [FaceMesh](https://google.github.io/mediapipe/solutions/face_mesh.html) è interamente contenuta nella cartella Python.<br />
 Si è applicata della data augmentation:<br />
-Applicazione di curve di colore dell'immagine (tramite un modulo esterno chiamato [BIMP](https://alessandrofrancesconi.it/projects/bimp/): <br />
+Applicazione di curve di colore dell'immagine, tramite un modulo esterno chiamato [BIMP](https://alessandrofrancesconi.it/projects/bimp/): <br />
 <img src="images/0.51_0.30_2.png" width="600px" height="300px">
 
 Rotazioni (+- 5°): <br />
@@ -75,7 +75,7 @@ Per ultimo, tali immagini sono state ridimensionate come un quadrato di dimensio
 <img src="images/0.51_0.30_warp_left_cropped_right.png" width="300px" height="300px">
 <img src="images/0.51_0.30_2_warp_right_cropped_left.png" width="300px" height="300px">
 
-Tali immagini sono organizzate in maniera analoga a quelle precedenti, in un'altra cartella chiamata train.
+Tali immagini sono salvate nella cartella train_classification, contenente nove sottocartelle che identificano la classe di appartenenza dell'immagine.
 
 # Modelli
-I dataset di regressione e di classificazione sono disponibili al seguente [link](https://drive.google.com/drive/folders/1CYh07UE_v58td-wKqa1jO1x-bAOt65gS?usp=sharing)
+I dataset di regressione e di classificazione sono disponibili al seguente [link](https://drive.google.com/drive/folders/1CYh07UE_v58td-wKqa1jO1x-bAOt65gS?usp=sharing).
